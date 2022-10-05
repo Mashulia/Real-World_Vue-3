@@ -14,13 +14,14 @@ export default {
   components: {
     EventCard,
   },
+  prop: ['page'],
   data() {
     return {
       events: null,
     };
   },
   created() {
-    EventService.getEvents()
+    EventService.getEvents(2, this.page)
       .then((response) => {
         this.events = response.data;
       })
