@@ -1,21 +1,21 @@
 <template>
   <h1>Events for good</h1>
   <div class="events">
-    <EventCard v-for="event in events" :key="event.id" :event="event"/>
+    <EventCard v-for="event in events" :key="event.id" :event="event" />
     <div class="pagination">
       <router-link
-          id="page-prev"
-          :to="{ name: 'EventList', query: { page: page - 1 } }"
-          rel="prev"
-          v-if="page !== 1"
+        id="page-prev"
+        :to="{ name: 'EventList', query: { page: page - 1 } }"
+        rel="prev"
+        v-if="page !== 1"
       >
         &#60; Previous
       </router-link>
       <router-link
-          id="page-next"
-          :to="{ name: 'EventList', query: { page: page + 1 } }"
-          rel="next"
-          v-if="hasNextPage"
+        id="page-next"
+        :to="{ name: 'EventList', query: { page: page + 1 } }"
+        rel="next"
+        v-if="hasNextPage"
       >
         Next &#62;
       </router-link>
@@ -26,40 +26,40 @@
 <script>
 import EventService from "@/services/EventService";
 import EventCard from "@/components/EventCard";
-import {watchEffect} from "vue";
+import { watchEffect } from "vue";
 
 export default {
   name: "Home",
   components: {
     EventCard,
   },
-  props: ['page'],
+  props: ["page"],
   data() {
     return {
       events: null,
-      totalEvents: 0
+      totalEvents: 0,
     };
   },
   created() {
     watchEffect(() => {
-      this.events = null
+      this.events = null;
       EventService.getEvents(2, this.page)
-          .then((response) => {
-            this.events = response.data;
-            this.totalEvents = response.headers['x-total-count']
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    })
+        .then((response) => {
+          this.events = response.data;
+          this.totalEvents = response.headers["x-total-count"];
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   },
   computed: {
     hasNextPage() {
-      let totalPages = Math.ceil(this.totalEvents / 2)
+      let totalPages = Math.ceil(this.totalEvents / 2);
 
-      return this.page < totalPages
-    }
-  }
+      return this.page < totalPages;
+    },
+  },
 };
 </script>
 <style scoped>
